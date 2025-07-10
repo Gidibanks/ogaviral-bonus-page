@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Claim Your Bonus</title>
+  <style>
+    body {
+      background: #f7f7f7;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 80px 20px;
+      color: #222;
+    }
+    .card {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 16px;
+      color: #555;
+    }
+    .btn {
+      display: inline-block;
+      margin: 15px 10px 0;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .yes-btn {
+      background: #9B4DFF;
+      color: white;
+    }
+    .no-btn {
+      background: #e0e0e0;
+      color: #444;
+    }
+    .yes-btn:hover {
+      background: #812dde;
+    }
+    .no-btn:hover {
+      background: #c2c2c2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>🎁 Are You Here for the Promo?</h1>
+    <p>We’ve reserved a reward for users who land here with intent. Confirm to continue.</p>
+
+    <button class="btn yes-btn" onclick="window.location.href='https://ogaviral.com/signup'">✅ Yes, Continue to OgaViral</button>
+    <button class="btn no-btn" onclick="alert('No bonus for you today 😢')">🚫 No, Take Me Back</button>
+  </div>
+
+</body>
+</html>
