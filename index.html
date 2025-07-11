@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Promo Confirmation - OgaViral</title>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NCB0J11PNK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-NCB0J11PNK');
+  </script>
+
   <style>
     body {
       margin: 0;
@@ -16,7 +26,6 @@
       align-items: center;
       height: 100vh;
     }
-
     .container {
       text-align: center;
       background: white;
@@ -26,18 +35,15 @@
       max-width: 90%;
       width: 400px;
     }
-
     h2 {
       color: #111;
       font-size: 22px;
     }
-
     p {
       color: #333;
       font-size: 15px;
       margin: 10px 0 25px;
     }
-
     .button {
       display: block;
       width: 100%;
@@ -49,61 +55,56 @@
       font-size: 15px;
       cursor: pointer;
     }
-
     .yes-btn {
       background-color: #9B4DFF;
       color: white;
     }
-
     .no-btn {
       background-color: #eee;
       color: #333;
       border: 1px solid #ccc;
     }
-
     .yes-btn:hover {
       background-color: #862be2;
     }
-
     .no-btn:hover {
       background-color: #ddd;
     }
   </style>
-<script>
-  function trackClaimBonus() {
-    // Google Analytics event (browser)
-    gtag('event', 'bonus_claimed', {
-      send_to: 'G-NCB0J11PNK',
-      event_category: 'engagement',
-      event_label: 'Confirm Page CTA Clicked'
-    });
 
-    // Meta CAPI event (server-side)
-    fetch('https://graph.facebook.com/v19.0/1265498695127046/events?access_token=YOUR_ACCESS_TOKEN', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        data: [{
-          event_name: 'bonus_claimed',
+  <!-- Unified tracking script -->
+  <script>
+    function trackClaimBonus() {
+      // Send to Meta CAPI backend
+      fetch("https://f4224740-1d70-446e-853f-7a0f8da2d46a-00-6y5wc91sl0yc.kirk.replit.dev/api/track", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event_name: "bonus_claimed",
           event_time: Math.floor(Date.now() / 1000),
-          event_source_url: window.location.href,
-          action_source: 'website',
           user_data: {
             client_user_agent: navigator.userAgent
           }
-        }]
+        }),
       })
-    });
+      .then(res => res.json())
+      .then(data => console.log("✅ Meta event sent:", data))
+      .catch(err => console.error("❌ Meta event error:", err));
 
-    // Redirect after short delay
-    setTimeout(function () {
-      window.location.href = "https://ogaviral.com/signup";
-    }, 300);
-  }
-</script>
+      // Send to Google Analytics
+      gtag('event', 'bonus_claimed', {
+        event_category: 'engagement',
+        event_label: 'Confirm Page CTA'
+      });
+
+      // Redirect
+      setTimeout(() => {
+        window.location.href = "https://ogaviral.com/signup";
+      }, 300);
+    }
+  </script>
 </head>
+
 <body>
   <div class="container">
     <h2>🚀 Are You Here To Gain Followers?</h2>
@@ -111,36 +112,5 @@
     <button class="button yes-btn" onclick="trackClaimBonus()">✅ Yes, Continue to OgaViral</button>
     <button class="button no-btn" onclick="window.history.back()">🚫 No, Take Me Back</button>
   </div>
-  <script>
-  function trackClaimBonus() {
-    gtag('event', 'bonus_claimed', {
-      event_category: 'engagement',
-      event_label: 'Confirm Page CTA'
-    });
-
-    // Redirect after tracking
-    setTimeout(function() {
-      window.location.href = "https://ogaviral.com/signup";
-    }, 300); // short delay to ensure GA event fires
-  }
-</script>
-  <script>
-  function trackClaimBonus() {
-    fetch("https://f4224740-1d70-446e-853f-7a0f8da2d46a-00-6y5wc91sl0yc.kirk.replit.dev/api/track", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        event_name: "bonus_claimed",
-        event_time: Math.floor(Date.now() / 1000),
-        user_data: {
-          client_user_agent: navigator.userAgent
-        }
-      }),
-    })
-    .then(res => res.json())
-    .then(data => console.log("✅ Event sent to Meta:", data))
-    .catch(err => console.error("❌ Event error:", err));
-  }
-</script>
 </body>
 </html>
