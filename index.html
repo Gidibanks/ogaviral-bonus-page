@@ -69,13 +69,39 @@
       background-color: #ddd;
     }
   </style>
-  <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-NCB0J11PNK');
+  function trackClaimBonus() {
+    // Google Analytics event (browser)
+    gtag('event', 'bonus_claimed', {
+      send_to: 'G-NCB0J11PNK',
+      event_category: 'engagement',
+      event_label: 'Confirm Page CTA Clicked'
+    });
+
+    // Meta CAPI event (server-side)
+    fetch('https://graph.facebook.com/v19.0/1265498695127046/events?access_token=YOUR_ACCESS_TOKEN', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        data: [{
+          event_name: 'bonus_claimed',
+          event_time: Math.floor(Date.now() / 1000),
+          event_source_url: window.location.href,
+          action_source: 'website',
+          user_data: {
+            client_user_agent: navigator.userAgent
+          }
+        }]
+      })
+    });
+
+    // Redirect after short delay
+    setTimeout(function () {
+      window.location.href = "https://ogaviral.com/signup";
+    }, 300);
+  }
 </script>
 </head>
 <body>
