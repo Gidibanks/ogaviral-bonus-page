@@ -81,20 +81,26 @@
   </style>
 
   <!-- Unified Tracking -->
-  <script>
-    function trackClaimBonus() {
-      // 1. Send to Meta CAPI (Replit)
-      fetch("https://f4224740-1d70-446e-853f-7a0f8da2d46a-00-6y5wc91sl0yc.kirk.replit.dev/api/track", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event_name: "bonus_claimed",
-          event_time: Math.floor(Date.now() / 1000),
-          user_data: {
-            client_user_agent: navigator.userAgent
-          }
-        }),
-      });
+<script>
+  function trackClaimBonus() {
+    fetch("https://f4224740-1d70-446e-853f-7a0f8da2d46a-00-6y5wc91sl0yc.kirk.replit.dev/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_name: "bonus_claimed",
+        event_time: Math.floor(Date.now() / 1000),
+        user_data: {
+          client_user_agent: navigator.userAgent
+        }
+      }),
+    });
+
+    // Redirect after short delay
+    setTimeout(() => {
+      window.location.href = "https://ogaviral.com/signup";
+    }, 300);
+  }
+</script>
 
       // 2. Send to GA
       gtag('event', 'bonus_claimed', {
