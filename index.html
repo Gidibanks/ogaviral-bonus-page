@@ -82,8 +82,21 @@
   <div class="container">
     <h2>🎁 Are You Here To Gain Followers?</h2>
     <p>We've reserved a bonus for users who land here with intent. Confirm to continue.</p>
-    <button class="button yes-btn" onclick="window.location.href='https://ogaviral.com/signup'">✅ Yes, Continue to OgaViral</button>
+    <button class="button yes-btn" onclick="trackClaimBonus()">✅ Yes, Continue to OgaViral</button>
     <button class="button no-btn" onclick="window.history.back()">🚫 No, Take Me Back</button>
   </div>
+  <script>
+  function trackClaimBonus() {
+    gtag('event', 'bonus_claimed', {
+      event_category: 'engagement',
+      event_label: 'Confirm Page CTA'
+    });
+
+    // Redirect after tracking
+    setTimeout(function() {
+      window.location.href = "https://ogaviral.com/signup";
+    }, 300); // short delay to ensure GA event fires
+  }
+</script>
 </body>
 </html>
