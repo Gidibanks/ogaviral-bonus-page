@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup Successful - OgaViral</title>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NCB0J11PNK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-NCB0J11PNK');
+
+    // Fire CompleteRegistration event
+    gtag('event', 'CompleteRegistration', {
+      event_category: 'conversion',
+      event_label: 'Signup Complete'
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Ubuntu', sans-serif;
+      background-color: #f0f7ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      max-width: 90%;
+      width: 400px;
+    }
+
+    h1 {
+      color: #2e7d32;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #444;
+      font-size: 16px;
+      margin-bottom: 25px;
+    }
+
+    a.button {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    a.button:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>✅ Registration Successful!</h1>
+    <p>Welcome to OgaViral. Your account has been created successfully.</p>
+    <a class="button" href="https://ogaviral.com/dashboard">Go to Dashboard</a>
+  </div>
+</body>
+</html>
