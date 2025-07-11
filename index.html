@@ -124,5 +124,23 @@
     }, 300); // short delay to ensure GA event fires
   }
 </script>
+  <script>
+  function trackClaimBonus() {
+    fetch("https://f4224740-1d70-446e-853f-7a0f8da2d46a-00-6y5wc91sl0yc.kirk.replit.dev/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_name: "bonus_claimed",
+        event_time: Math.floor(Date.now() / 1000),
+        user_data: {
+          client_user_agent: navigator.userAgent
+        }
+      }),
+    })
+    .then(res => res.json())
+    .then(data => console.log("✅ Event sent to Meta:", data))
+    .catch(err => console.error("❌ Event error:", err));
+  }
+</script>
 </body>
 </html>
