@@ -80,9 +80,9 @@
     }
   </style>
 
-  <!-- Meta CAPI Unified Tracking -->
+<!-- Meta CAPI Unified Tracking -->
 <script>
-  // Trigger PageView on page load
+  // On Page Load, send PageView
   window.addEventListener("DOMContentLoaded", () => {
     sendMetaEvent("PageView");
   });
@@ -90,26 +90,36 @@
   // Track Complete Registration
   async function trackCompleteRegistration(email) {
     const emailHash = await sha256(email.trim().toLowerCase());
-    sendMetaEvent("CompleteRegistration", { em: emailHash });
+    sendMetaEvent("CompleteRegistration", {
+      em: emailHash,
+      fbp: getFbp(),
+      fbc: getFbc(),
+      client_user_agent: navigator.userAgent,
+    });
   }
 
   // Track Purchase
   async function trackPurchase(email) {
     const emailHash = await sha256(email.trim().toLowerCase());
-    sendMetaEvent("Purchase", { em: emailHash });
+    sendMetaEvent("Purchase", {
+      em: emailHash,
+      fbp: getFbp(),
+      fbc: getFbc(),
+      client_user_agent: navigator.userAgent,
+    });
   }
 
-  // Base function to send event
-  async function sendMetaEvent(eventName, extraUserData = {}) {
+  // Main sender
+  async function sendMetaEvent(eventName, userData = {}) {
     const payload = {
       event_name: eventName,
       event_time: Math.floor(Date.now() / 1000),
       user_data: {
-        ...extraUserData,
-        fbp: getFbp(),
-        fbc: getFbc(),
-        client_user_agent: navigator.userAgent
-      }
+        ...userData,
+        client_user_agent: navigator.userAgent,
+        fbp: userData.fbp || getFbp(),
+        fbc: userData.fbc || getFbc(),
+      },
     };
 
     try {
@@ -118,42 +128,31 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-    } catch (e) {
-      console.error("Meta CAPI Event Error:", e);
+    } catch (err) {
+      console.error("Meta CAPI Error:", err);
     }
   }
 
-  // Hashing with SHA256 (for email)
+  // Hash with SHA-256
   async function sha256(str) {
     const buffer = new TextEncoder().encode(str);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
   }
 
-  // Get _fbp from cookie
+  // Get _fbp from cookies
   function getFbp() {
-    return (document.cookie.match(/_fbp=([^;]+)/) || [])[1] || '';
+    return (document.cookie.match(/_fbp=([^;]+)/) || [])[1] || "";
   }
 
   // Get fbc from fbclid in URL
   function getFbc() {
     const fbclid = new URLSearchParams(window.location.search).get("fbclid");
-    return fbclid ? `fb.1.${Date.now()}.${fbclid}` : '';
+    return fbclid ? `fb.1.${Date.now()}.${fbclid}` : "";
   }
 </script>
-
-      // 2. Send to GA
-      gtag('event', 'CompleteRegistration', {
-        event_category: 'engagement',
-        event_label: 'Confirm Page CTA'
-      });
-
-      // 3. Redirect after delay
-      setTimeout(() => {
-        window.location.href = "https://ogaviral.com/index";
-      }, 300);
-    }
-  </script>
 </head>
 
 <body>
