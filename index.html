@@ -80,31 +80,77 @@
     }
   </style>
 
-  <!-- Unified Tracking -->
-  <script>
-    function trackClaimBonus() {
-      // 1. Send to Meta CAPI (Replit)
-      fetch("https://f4224740-1d70-446e-853f-7a0f8da2d46a-00-6y5wc91sl0yc.kirk.replit.dev/api/track", {
+  <!-- Meta CAPI Unified Tracking -->
+<script>
+  // Trigger PageView on page load
+  window.addEventListener("DOMContentLoaded", () => {
+    sendMetaEvent("PageView");
+  });
+
+  // Track Complete Registration
+  async function trackCompleteRegistration(email) {
+    const emailHash = await sha256(email.trim().toLowerCase());
+    sendMetaEvent("CompleteRegistration", { em: emailHash });
+  }
+
+  // Track Purchase
+  async function trackPurchase(email) {
+    const emailHash = await sha256(email.trim().toLowerCase());
+    sendMetaEvent("Purchase", { em: emailHash });
+  }
+
+  // Base function to send event
+  async function sendMetaEvent(eventName, extraUserData = {}) {
+    const payload = {
+      event_name: eventName,
+      event_time: Math.floor(Date.now() / 1000),
+      user_data: {
+        ...extraUserData,
+        fbp: getFbp(),
+        fbc: getFbc(),
+        client_user_agent: navigator.userAgent
+      }
+    };
+
+    try {
+      await fetch("https://f4224740-1d70-446e-853f-7a0f8da2d46a-00-6y5wc91sl0yc.kirk.replit.dev/api/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          event_name: "bonus_claimed",
-          event_time: Math.floor(Date.now() / 1000),
-          user_data: {
-            client_user_agent: navigator.userAgent
-          }
-        }),
+        body: JSON.stringify(payload),
       });
+    } catch (e) {
+      console.error("Meta CAPI Event Error:", e);
+    }
+  }
+
+  // Hashing with SHA256 (for email)
+  async function sha256(str) {
+    const buffer = new TextEncoder().encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+    return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // Get _fbp from cookie
+  function getFbp() {
+    return (document.cookie.match(/_fbp=([^;]+)/) || [])[1] || '';
+  }
+
+  // Get fbc from fbclid in URL
+  function getFbc() {
+    const fbclid = new URLSearchParams(window.location.search).get("fbclid");
+    return fbclid ? `fb.1.${Date.now()}.${fbclid}` : '';
+  }
+</script>
 
       // 2. Send to GA
-      gtag('event', 'bonus_claimed', {
+      gtag('event', 'CompleteRegistration', {
         event_category: 'engagement',
         event_label: 'Confirm Page CTA'
       });
 
       // 3. Redirect after delay
       setTimeout(() => {
-        window.location.href = "https://ogaviral.com/signup";
+        window.location.href = "https://ogaviral.com/index";
       }, 300);
     }
   </script>
